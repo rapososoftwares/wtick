@@ -275,11 +275,12 @@ const TicketsListCustom = (props) => {
   }, [status, showAll, user, selectedQueueIds, tags, users, profile, queues]);
 
   useEffect(() => {
+	const count = ticketsList.filter(ticket => ticket.isGroup).length;
     if (typeof updateCount === "function") {
-      updateCount(ticketsList.length);
+      updateCount(count);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketsList]);
+  }, [ticketsList, updateCount]);
 
   const loadMore = () => {
     setPageNumber((prevState) => prevState + 1);

@@ -43,8 +43,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     companyId: bodyCompanyId,
     queueIds,
     whatsappId,
-    startWork,
-    endWork
+    greetingMessage,
+    transferMessage
   } = req.body;
   let userCompanyId: number | null = null;
 
@@ -70,8 +70,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     companyId: bodyCompanyId || userCompanyId,
     queueIds,
     whatsappId,
-    startWork,
-    endWork
+    greetingMessage,
+    transferMessage
   });
 
   const io = getIO();
@@ -87,7 +87,6 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
   const { userId } = req.params;
 
   const user = await ShowUserService(userId);
-
   return res.status(200).json(user);
 };
 
@@ -109,7 +108,6 @@ export const update = async (
     companyId,
     requestUserId: +requestUserId
   });
-
   const io = getIO();
   io.emit(`company-${companyId}-user`, {
     action: "update",

@@ -39,8 +39,8 @@ import ChatPopover from "../pages/Chat/ChatPopover";
 import { useDate } from "../hooks/useDate";
 
 import ColorModeContext from "../layout/themeContext";
-import Brightness2 from '@material-ui/icons/Brightness2';
-import Brightness5 from '@material-ui/icons/Brightness5';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 const drawerWidth = 240;
 
@@ -53,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
     },
     backgroundColor: theme.palette.fancyBackground,
     '& .MuiButton-outlinedPrimary': {
-      color: theme.mode === 'light' ? '#643570' : '#FFF',
-      border: theme.mode === 'light' ? '1px solid #060169' : '1px solid rgba(255, 255, 255, 0.5)',
+      color: theme.mode === 'light' ? '#00BFFF' : '#FFF',
+      border: theme.mode === 'light' ? '1px solid rgba(0 124 102)' : '1px solid rgba(255, 255, 255, 0.5)',
     },
     '& .MuiTab-textColorPrimary.Mui-selected': {
-      color: theme.mode === 'light' ? '#643570' : '#FFF',
+      color: theme.mode === 'light' ? '#00BFFF' : '#FFF',
     }
   },
   avatar: {
@@ -69,10 +69,9 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.barraSuperior,
   },
   toolbarIcon: {
-    background: theme.palette.fundologoLateral,
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     padding: "0 8px",
     minHeight: "48px",
     [theme.breakpoints.down("sm")]: {
@@ -109,8 +108,6 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   drawerPaper: {
-    background: theme.palette.barraLateral,
-    color: theme.palette.corTextobarra,
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
@@ -118,6 +115,10 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    },
+    ...theme.scrollbarStylesSoft
   },
   drawerPaperClose: {
     overflowX: "hidden",
@@ -386,17 +387,17 @@ const LoggedInLayout = ({ children, themeToggle }) => {
             {/* {greaterThenSm && user?.profile === "admin" && getDateAndDifDays(user?.company?.dueDate).difData < 7 ? ( */}
             {greaterThenSm && user?.profile === "admin" && user?.company?.dueDate ? (
               <>
-                Olá <b>{user.name}</b>, Seja Bem vindo(a) ao <b>ChatPlus</b>! (Ativo até {dateToClient(user?.company?.dueDate)})
+                Olá <b>{user.name}</b>, Bem vindo a <b>{user?.company?.name}</b>! (Ativo até {dateToClient(user?.company?.dueDate)})
               </>
             ) : (
               <>
-                Olá <b>{user.name}</b>, Seja Bem vindo(a) ao <b>ChatPlus</b>!
+                Olá  <b>{user.name}</b>, Bem vindo a <b>{user?.company?.name}</b>!
               </>
             )}
           </Typography>
 
           <IconButton edge="start" onClick={toggleColorMode}>
-            {theme.mode === 'dark' ? <Brightness5 style={{ color: "white" }} /> : <Brightness2 style={{ color: "white" }} />}
+            {theme.mode === 'dark' ? <Brightness7Icon style={{ color: "white" }} /> : <Brightness4Icon style={{ color: "white" }} />}
           </IconButton>
 
           <NotificationsVolume

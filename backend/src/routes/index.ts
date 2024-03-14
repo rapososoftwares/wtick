@@ -29,8 +29,6 @@ import subscriptionRoutes from "./subScriptionRoutes";
 import ticketTagRoutes from "./ticketTagRoutes";
 import filesRoutes from "./filesRoutes";
 import promptRoutes from "./promptRouter";
-import queueIntegrationRoutes from "./queueIntegrationRoutes";
-import forgotsRoutes from "./forgotPasswordRoutes"; // Reset Passwd
 const routes = Router();
 
 routes.use(userRoutes);
@@ -63,7 +61,5 @@ routes.use(invoiceRoutes);
 routes.use(ticketTagRoutes);
 routes.use(filesRoutes);
 routes.use(promptRoutes);
-routes.use(queueIntegrationRoutes);
-routes.use(forgotsRoutes);// Reset Passwd
 
 export default routes;

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { getIO } from "../libs/socket";
-import { removeWbot, restartWbot } from "../libs/wbot";
+import { removeWbot } from "../libs/wbot";
 import { StartWhatsAppSession } from "../services/WbotServices/StartWhatsAppSession";
-import AppError from "../errors/AppError";
 
 import CreateWhatsAppService from "../services/WhatsappService/CreateWhatsAppService";
 import DeleteWhatsAppService from "../services/WhatsappService/DeleteWhatsAppService";
@@ -24,10 +23,6 @@ interface WhatsappData {
   sendIdQueue?: number;
   timeSendQueue?: number;
   promptId?: number;
-  maxUseBotQueues?: number;
-  timeUseBotQueues?: number;
-  expiresTicket?: number;
-  expiresInactiveMessage?: string;
 }
 
 interface QueryParams {
@@ -54,11 +49,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     token,
     timeSendQueue,
     sendIdQueue,
-    promptId,
-    maxUseBotQueues,
-    timeUseBotQueues,
-    expiresTicket,
-    expiresInactiveMessage
+    promptId
   }: WhatsappData = req.body;
   const { companyId } = req.user;
 
@@ -74,11 +65,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     token,
     timeSendQueue,
     sendIdQueue,
-    promptId,
-    maxUseBotQueues,
-    timeUseBotQueues,
-    expiresTicket,
-    expiresInactiveMessage
+    promptId
   });
 
   StartWhatsAppSession(whatsapp, companyId);
@@ -158,19 +145,4 @@ export const remove = async (
   });
 
   return res.status(200).json({ message: "Whatsapp deleted." });
-};
-
-export const restart = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  const { companyId, profile } = req.user;
-
-  if (profile !== "admin") {
-    throw new AppError("ERR_NO_PERMISSION", 403);
-  }
-
-  await restartWbot(companyId);
-
-  return res.status(200).json({ message: "Whatsapp restart." });
 };

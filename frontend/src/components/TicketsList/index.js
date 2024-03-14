@@ -183,8 +183,7 @@ const TicketsList = ({
     if (!status && !searchParam) return;
     dispatch({
       type: "LOAD_TICKETS",
-			payload: tickets.filter(ticket => user.profile === "admin" || ticket.queueId || 
-				(showAll && ticket.whatsappId === user.whatsappId)),
+      payload: tickets,
     });
   }, [tickets, status, searchParam]);
 

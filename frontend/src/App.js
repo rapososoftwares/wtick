@@ -37,7 +37,7 @@ const App = () => {
                 },
                 "&::-webkit-scrollbar-thumb": {
                     boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
-                    backgroundColor: "#007449",
+                    backgroundColor: "#00BFFF",
                 },
             },
             scrollbarStylesSoft: {
@@ -50,15 +50,15 @@ const App = () => {
             },
             palette: {
                 type: mode,
-                primary: { main: mode === "light" ? "#060169" : "#FFFFFF" },
-                textPrimary: mode === "light" ? "#060169" : "#FFFFFF",
-                borderPrimary: mode === "light" ? "#060169" : "#FFFFFF",
+                primary: { main: "#00BFFF" },
+                textPrimary: mode === "light" ? "#00BFFF" : "#FFFFFF",
+                borderPrimary: mode === "light" ? "#00BFFF" : "#FFFFFF",
                 dark: { main: mode === "light" ? "#333333" : "#F3F3F3" },
                 light: { main: mode === "light" ? "#F3F3F3" : "#333333" },
                 tabHeaderBackground: mode === "light" ? "#EEE" : "#333",
                 optionsBackground: mode === "light" ? "#fafafa" : "#333",
 				options: mode === "light" ? "#fafafa" : "#666",
-				fontecor: mode === "light" ? "#060169" : "#fff",
+				fontecor: mode === "light" ? "#00BFFF" : "#fff",
                 fancyBackground: mode === "light" ? "#fafafa" : "#333",
 				bordabox: mode === "light" ? "#eee" : "#333",
 				newmessagebox: mode === "light" ? "#eee" : "#333",
@@ -73,12 +73,9 @@ const App = () => {
                 total: mode === "light" ? "#fff" : "#222",
                 messageIcons: mode === "light" ? "grey" : "#F3F3F3",
                 inputBackground: mode === "light" ? "#FFFFFF" : "#333",
-                barraSuperior: mode === "light" ? "linear-gradient(to right, #060169, #060169, #060169)" : "linear-gradient(to right, #060169, #060169, #060169)",
+                barraSuperior: mode === "light" ? "linear-gradient(to right, #00BFFF, #0000FF, #00008B)" : "#666",
 				boxticket: mode === "light" ? "#EEE" : "#333",
 				campaigntab: mode === "light" ? "#ededed" : "#333",
-                corIconesbarra: mode === "light" ? "#1C2E36" : "#34DD3B", // Cor dos ícones da barra
-                fundologoLateral: mode === "light" ? "linear-gradient(to right, #060169, #060169, #060169)" : "linear-gradient(to right, #060169, #060169, #060169)", //Fundo Logo Superior
-                barraLateral: mode === "light" ? "linear-gradient(to right, #060169, #060169, #060169)" : "linear-gradient(to right, #060169, #060169, #060169)", //Barra Vertical
             },
             mode,
         },

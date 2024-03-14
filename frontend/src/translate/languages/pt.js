@@ -9,10 +9,8 @@ const messages = {
         },
         form: {
           name: "Nome",
-          email: "E-mail",
+          email: "Email",
           password: "Senha",
-          empresa: "Nome da empresa",
-          fone: "Telefone/Whatsapp"
         },
         buttons: {
           submit: "Cadastrar",
@@ -21,33 +19,13 @@ const messages = {
       },
       login: {
         title: "Login",
-        titulo: "Entre com seu e-mail e senha",
         form: {
           email: "Email",
           password: "Senha",
         },
         buttons: {
           submit: "Entrar",
-          register: "Não tem uma conta? Cadastre-se!",
-          whatsapp: "Entrar em contato pelo Whatsapp",
-          forgetpsw: "Recuperar Senha?",
-        },
-      },
-      plans: {
-        form: {
-          name: "Nome",
-          users: "Usuários",
-          connections: "Conexões",
-          campaigns: "Campanhas",
-          schedules: "Agendamentos",
-          enabled: "Habilitadas",
-          disabled: "Desabilitadas",
-          clear: "Cancelar",
-          delete: "Excluir",
-          save: "Salvar",
-          yes: "Sim",
-          no: "Não",
-          money: "R$",
+          register: "Não tem um conta? Cadastre-se!",
         },
       },
       companies: {
@@ -71,56 +49,10 @@ const messages = {
           perDay: {
             title: "Atendimentos hoje: ",
           },
-          filters: {
-            startDate: "Data Inicial",
-            endDate: "Data Final",
-            periodText: "Periodo",
-            periodOptions: {
-              input: "Selecione o período desejado",
-              zero: "Nenhum período selecionado",
-              three: "Últimos três dias",
-              seven: "Últimos sete dias",
-              fifteen: "Últimos quinze dias",
-              thirty: "Últimos trinta dias",
-              sixty: "Últimos sessenta dias",
-              ninety: "Últimos noventa dias"
-            },
-            duedate: "Data de Vencimento",
-            filtertype: {
-                title: "Tipo de Filtro",
-                valueA: "Filtro por Data",
-                valueB: "Filtro por Período",
-                helperText: "Selecione o período desejado",
-            },
-          },
         },
-        cards: {
-          attdPendants: "Atd. Pendentes",
-          attdHappening: "Atd. Acontecendo",
-          attdPerformed: "Atd. Realizados",
-          leads: "Leads",
-          mtofService: "T.M. de Atendimento",
-          mtofwaiting: "T.M. de Espera",
-        },
-      },
-      kanban: {
-				inopen: "Em aberto",
-			},
-      todo: {
-        newtask: "Nova tarefa",
-        buttons: {
-          add: "Adicionar",
-          edit: "Salvar",
-        },
-      },
-      internalChat: {
-        deletePrompt: "Esta ação não pode ser revertida, confirmar?",
       },
       connections: {
         title: "Conexões",
-        waitConnection:"Aguarde... Suas conexões serão reiniciadas!",
-        restartConnections:"Reiniciar Conexões",
-        callSupport:"Chamar Suporte",
         toasts: {
           deleted: "Conexão com o WhatsApp excluída com sucesso!",
         },
@@ -166,7 +98,6 @@ const messages = {
           default: "Padrão",
           actions: "Ações",
           session: "Sessão",
-          number: "Número"
         },
       },
       whatsappModal: {
@@ -182,10 +113,7 @@ const messages = {
           queueRedirection: "Redirecionamento de Fila",
           queueRedirectionDesc: "Selecione uma fila para os contatos que não possuem fila serem redirecionados",
           prompt: "Prompt",
-          maxUseBotQueues: "Enviar bot x vezes",
-          timeUseBotQueues: "Intervalo em minutos entre envio de bot",
-          expiresTicket: "Encerrar chats abertos após x minutos",
-          expiresInactiveMessage: "Mensagem de encerramento por inatividade",
+
         },
         buttons: {
           okAdd: "Adicionar",
@@ -219,39 +147,6 @@ const messages = {
           whatsapp: "WhatsApp",
           email: "Email",
           actions: "Ações",
-        },
-      },
-      queueIntegrationModal: {
-        title: {
-          add: "Adicionar projeto",
-          edit: "Editar projeto",
-        },
-        form: {
-          id: "ID",
-          type: "Tipo",
-          name: "Nome",
-          projectName: "Nome do Projeto",
-          language: "Linguagem",
-          jsonContent: "JsonContent",
-          urlN8N: "URL",
-          typebotSlug: "Typebot - Slug",
-          typebotExpires: "Tempo em minutos para expirar uma conversa",
-          typebotKeywordFinish: "Palavra para finalizar o ticket",
-          typebotKeywordRestart: "Palavra para reiniciar o fluxo",
-          typebotRestartMessage: "Mensagem ao reiniciar a conversa",
-          typebotUnknownMessage: "Mensagem de opção inválida",
-          typebotDelayMessage: "Intervalo (ms) entre mensagens",   
-        },
-        buttons: {
-          okAdd: "Adicionar",
-          okEdit: "Salvar",
-          cancel: "Cancelar",
-          test: "Testar Bot",
-        },
-        messages: {
-          testSuccess: "Integração testada com sucesso!",
-          addSuccess: "Integração adicionada com sucesso.",
-          editSuccess: "Integração editada com sucesso.",
         },
       },
       promptModal: {
@@ -306,7 +201,6 @@ const messages = {
           email: "Email",
           extraName: "Nome do campo",
           extraValue: "Valor",
-          whatsapp: "Conexão Origem: "
         },
         buttons: {
           addExtraInfo: "Adicionar informação",
@@ -330,13 +224,11 @@ const messages = {
           ratingMessage: "Mensagem de avaliação",
           token: "Token",
           orderQueue: "Ordem da fila (Bot)",
-          integrationId: "Integração",
         },
         buttons: {
           okAdd: "Adicionar",
           okEdit: "Salvar",
           cancel: "Cancelar",
-          attach: "Anexar Arquivo",
         },
       },
       userModal: {
@@ -350,8 +242,8 @@ const messages = {
           password: "Senha",
           profile: "Perfil",
           whatsapp: "Conexão Padrão",
-          startWork: "Hora inicial",
-					endWork: "Hora final",
+          greetingMessage : "Mensagem de saudação",
+          transferMessage : "Mensagem de transferência"
         },
         buttons: {
           okAdd: "Adicionar",
@@ -396,12 +288,6 @@ const messages = {
       },
       chat: {
         noTicketMessage: "Selecione um ticket para começar a conversar.",
-      },
-      uploads: {
-        titles: {
-          titleUploadMsgDragDrop: "ARRASTE E SOLTE ARQUIVOS NO CAMPO ABAIXO",
-          titleFileList: "Lista de arquivo(s)"
-        },
       },
       uploads: {
         titles: {
@@ -489,37 +375,12 @@ const messages = {
           financeiro: "Financeiro",
           files: "Lista de arquivos",
           prompts: "Open.Ai",
-          queueIntegration: "Integrações",
-          kanban: "Kanban CRM",
-          dashboard: "Dashboard",
-          logout: "Desconectar-se"
         },
         appBar: {
           user: {
             profile: "Perfil",
             logout: "Sair",
           },
-        },
-      },
-      queueIntegration: {
-        title: "Integrações",
-        table: {
-          id: "ID",
-          type: "Tipo",
-          name: "Nome",
-          projectName: "Nome do Projeto",
-          language: "Linguagem",
-          lastUpdate: "Ultima atualização",
-          actions: "Ações",
-        },
-        buttons: {
-          add: "Adicionar Projeto",
-        },
-        searchPlaceholder: "Pesquisar...",
-        confirmationModal: {
-          deleteTitle: "Excluir",
-          deleteMessage:
-            "Você tem certeza? Essa ação não pode ser revertida! e será removida das filas e conexões vinculadas",
         },
       },
       files: {
@@ -546,8 +407,6 @@ const messages = {
       },
       messagesAPI: {
         title: "API",
-        doc: "Documentação para envio de mensagens:",
-        formMethod: "Método de envio:",
         textMessage: {
           number: "Número",
           body: "Mensagem",
@@ -558,41 +417,6 @@ const messages = {
           body: "Nome do arquivo",
           media: "Arquivo",
           token: "Token cadastrado",
-        },
-        buttons: {
-          submit: "Enviar",
-        },
-        helpTexts: {
-          textMsg: {
-            title: "Mensagem de Texto",
-            info: "Seguem abaixo a lista de informações necessárias para envio das mensagens de texto:",
-            endpoint: "Endpoint: ",
-            method: "Método: ",
-            headers: "Headers: ",
-            body: "Body: ",
-            
-          },
-          test: "Teste de envio: ",
-          mediaMsg: {
-            title: "Mensagem de Média",
-            info: "Seguem abaixo a lista de informações necessárias para envio das mensagens de texto:",
-            endpoint: "Endpoint: ",
-            method: "Método: ",
-            headers: "Headers: ",
-            body: "Body: ",
-            formData: "FormData: ",
-          },
-          instructions: "Instruções",
-          notes: {
-            title: "Observações importantes",
-            textA: "Antes de enviar mensagens, é necessário o cadastro do token vinculado à conexão que enviará as mensagens. <br/>Para realizar o cadastro acesse o menu 'Conexões', clique no botão editar da conexão e insira o token no devido campo.",
-            textB: {
-              title: "O número para envio não deve ter mascara ou caracteres especiais e deve ser composto por:",
-              partA: "Código de País",
-              partB: "DDD",
-              partC: "Número",
-            },
-          },
         },
       },
       notifications: {
@@ -748,14 +572,8 @@ const messages = {
             scheduledAt: "Agendamento",
             confirmation: "Confirmação",
             contactList: "Lista de Contato",
-            statusTicket: "Status do Ticket",
-            openTicketStatus: "Aberto",
-            closedTicketStatus: "Fechado",
-            enabledOpenTicket: "Habilitado",
-            disabledOpenTicket: "Desabilitado",
-            openTicket: "Abrir ticket",
-            fileList: "Lista de arquivos",
             tagList: "Lista de Tags",
+            fileList: "Lista de Arquivos"
           },
           buttons: {
             add: "Adicionar",
@@ -856,8 +674,6 @@ const messages = {
           email: "Email",
           profile: "Perfil",
           actions: "Ações",
-          startWork: "Horário inicial",
-          endWork: "Horário final",
         },
         buttons: {
           add: "Adicionar usuário",
@@ -887,23 +703,6 @@ const messages = {
           sentAt: "Data de Envio",
           status: "Status",
           actions: "Ações",
-        },
-        calendar: {
-          date: "Data",
-          time: "Hora",
-          event: "Evento",
-          allDay: "Dia Todo",
-          week: "Semana",
-          work_week: "Agendamentos",
-          day: "Dia",
-          month: "Mês",
-          previous: "Anterior",
-          next: "Próximo",
-          yesterday: "Ontem",
-          tomorrow: "Amanhã",
-          today: "Hoje",
-          agenda: "Agenda",
-          noEventsInRange: "Não há agendamentos no período.",
         },
         buttons: {
           add: "Novo Agendamento",
@@ -941,13 +740,6 @@ const messages = {
               enabled: "Ativado",
               disabled: "Desativado",
             },
-          },
-          tabs: {
-              options: "Opções",
-              schedules: "Horários",
-              companies: "Empresas",
-              plans: "Planos",
-              helps: "Ajuda",
           },
         },
       },
@@ -1058,11 +850,10 @@ const messages = {
         ERR_NO_WAPP_FOUND: "Nenhum WhatsApp encontrado com este ID.",
         ERR_CREATING_MESSAGE: "Erro ao criar mensagem no banco de dados.",
         ERR_CREATING_TICKET: "Erro ao criar tíquete no banco de dados.",
-        ERR_OUT_OF_HOURS: "Fora do Horário de Expediente!",
         ERR_FETCH_WAPP_MSG:
           "Erro ao buscar a mensagem no WhtasApp, talvez ela seja muito antiga.",
         ERR_QUEUE_COLOR_ALREADY_EXISTS:
-          "Esta cor já está em uso, por favor escolha outra.",
+          "Esta cor já está em uso, escolha outra.",
         ERR_WAPP_GREETING_REQUIRED:
           "A mensagem de saudação é obrigatório quando há mais de uma fila.",
       },

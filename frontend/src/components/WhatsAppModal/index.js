@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
-import MessageVariablesPicker from "../MessageVariablesPicker";
 
 import {
   Dialog,
@@ -76,10 +75,6 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
     provider: "beta",
     timeSendQueue: 0,
     sendIdQueue: 0,
-    expiresInactiveMessage: "",
-    expiresTicket: 0,
-    timeUseBotQueues: 0,
-    maxUseBotQueues: 3
   };
   const [whatsApp, setWhatsApp] = useState(initialState);
   const [selectedQueueIds, setSelectedQueueIds] = useState([]);
@@ -164,28 +159,6 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
     setWhatsApp(initialState);
   };
 
-  const handleClickMsgVar = async (msgVar, setFieldValue) => {
-    const activeElement = document.activeElement; // Pega o elemento atualmente focado
-    const fieldName = activeElement.name; // Supõe que o elemento focado tenha uma propriedade 'name'
-
-    // Lista dos nomes dos campos permitidos
-    const allowedFields = ['greetingMessage', 'complationMessage', 'outOfHoursMessage', 'ratingMessage', 'expiresInactiveMessage'];
-
-    // Verifica se o campo ativo está na lista de campos permitidos
-    if (allowedFields.includes(fieldName)) {
-        const firstHalfText = activeElement.value.substring(0, activeElement.selectionStart);
-        const secondHalfText = activeElement.value.substring(activeElement.selectionEnd);
-        const newCursorPos = activeElement.selectionStart + msgVar.length;
-
-        setFieldValue(fieldName, `${firstHalfText}${msgVar}${secondHalfText}`);
-
-        await new Promise(r => setTimeout(r, 100));
-        activeElement.focus(); // Re-foca no campo ativo
-        activeElement.setSelectionRange(newCursorPos, newCursorPos); // Posiciona o cursor corretamente
-    }
-};
-
-
   return (
     <div className={classes.root}>
       <Dialog
@@ -211,7 +184,7 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
             }, 400);
           }}
         >
-          {({ values, touched, errors, isSubmitting, setFieldValue }) => (
+          {({ values, touched, errors, isSubmitting }) => (
             <Form>
               <DialogContent dividers>
                 <div className={classes.multFieldLine}>
@@ -320,14 +293,6 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
                     margin="dense"
                   />
                 </div>
-                
-                <Grid item>
-                          <MessageVariablesPicker
-                            disabled={isSubmitting}
-                            onClick={value => handleClickMsgVar(value, setFieldValue)}
-                          />
-                </Grid>
-
                 <div>
                   <Field
                     as={TextField}
@@ -342,7 +307,7 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
                 <QueueSelect
                   selectedQueueIds={selectedQueueIds}
                   onChange={(selectedIds) => handleChangeQueue(selectedIds)}
-                />
+                  />
                 <FormControl
                   margin="dense"
                   variant="outlined"
@@ -429,64 +394,6 @@ const WhatsAppModal = ({ open, onClose, whatsAppId }) => {
                     </Grid>
 
                   </Grid>
-                  <Grid spacing={2} container>
-                    {/* QUANTIDADE MÁXIMA DE VEZES QUE O CHATBOT VAI SER ENVIADO */}
-                    <Grid xs={12} md={6} item>
-                      <Field
-                        as={TextField}
-                        label={i18n.t("whatsappModal.form.maxUseBotQueues")}
-                        fullWidth
-                        name="maxUseBotQueues"
-                        variant="outlined"
-                        margin="dense"
-                        error={touched.maxUseBotQueues && Boolean(errors.maxUseBotQueues)}
-                        helperText={touched.maxUseBotQueues && errors.maxUseBotQueues}
-                      />
-                    </Grid>
-                    {/* TEMPO PARA ENVIO DO CHATBOT */}
-                    <Grid xs={12} md={6} item>
-                      <Field
-                        as={TextField}
-                        label={i18n.t("whatsappModal.form.timeUseBotQueues")}
-                        fullWidth
-                        name="timeUseBotQueues"
-                        variant="outlined"
-                        margin="dense"
-                        error={touched.timeUseBotQueues && Boolean(errors.timeUseBotQueues)}
-                        helperText={touched.timeUseBotQueues && errors.timeUseBotQueues}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid spacing={2} container>
-                    {/* ENCERRAR CHATS ABERTOS APÓS X HORAS */}
-                    <Grid xs={12} md={12} item>
-                      <Field
-                        as={TextField}
-                        label={i18n.t("whatsappModal.form.expiresTicket")}
-                        fullWidth
-                        name="expiresTicket"
-                        variant="outlined"
-                        margin="dense"
-                        error={touched.expiresTicket && Boolean(errors.expiresTicket)}
-                        helperText={touched.expiresTicket && errors.expiresTicket}
-                      />
-                    </Grid>
-                  </Grid>
-                  {/* MENSAGEM POR INATIVIDADE*/}
-                  <div>
-                    <Field
-                      as={TextField}
-                      label={i18n.t("whatsappModal.form.expiresInactiveMessage")}
-                      multiline
-                      rows={4}
-                      fullWidth
-                      name="expiresInactiveMessage"
-                      error={touched.expiresInactiveMessage && Boolean(errors.expiresInactiveMessage)}
-                      helperText={touched.expiresInactiveMessage && errors.expiresInactiveMessage}
-                      variant="outlined"
-                      margin="dense"
-                    />
-                  </div>
                 </div>
               </DialogContent>
               <DialogActions>

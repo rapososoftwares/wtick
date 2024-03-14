@@ -20,11 +20,6 @@ interface WhatsappData {
   sendIdQueue?: number;
   timeSendQueue?: number;
   promptId?: number;
-  maxUseBotQueues?: number;
-  timeUseBotQueues?: number;
-  expiresTicket?: number;
-  expiresInactiveMessage?: string;
-
 }
 
 interface Request {
@@ -62,11 +57,7 @@ const UpdateWhatsAppService = async ({
     token,
     timeSendQueue,
     sendIdQueue = null,
-    promptId,
-    maxUseBotQueues,
-    timeUseBotQueues,
-    expiresTicket,
-    expiresInactiveMessage
+    promptId
   } = whatsappData;
 
   try {
@@ -109,11 +100,7 @@ const UpdateWhatsAppService = async ({
     token,
     timeSendQueue,
     sendIdQueue,
-    promptId,
-    maxUseBotQueues,
-    timeUseBotQueues,
-    expiresTicket,
-    expiresInactiveMessage
+    promptId
   });
 
   await AssociateWhatsappQueue(whatsapp, queueIds);

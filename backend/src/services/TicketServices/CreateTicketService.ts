@@ -38,15 +38,14 @@ const CreateTicketService = async ({
   if (!defaultWhatsapp)
     defaultWhatsapp = await GetDefaultWhatsApp(companyId);
 
-  await CheckContactOpenTickets(contactId, whatsappId);
+  await CheckContactOpenTickets(contactId);
 
   const { isGroup } = await ShowContactService(contactId, companyId);
 
   const [{ id }] = await Ticket.findOrCreate({
     where: {
       contactId,
-      companyId,
-      whatsappId
+      companyId
     },
     defaults: {
       contactId,

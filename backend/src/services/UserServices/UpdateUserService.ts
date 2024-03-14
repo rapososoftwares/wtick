@@ -13,8 +13,9 @@ interface UserData {
   companyId?: number;
   queueIds?: number[];
   whatsappId?: number;
-  startWork?: string;
-  endWork?: string;
+  greetingMessage?: string;
+  transferMessage?: string;
+
 }
 
 interface Request {
@@ -52,7 +53,7 @@ const UpdateUserService = async ({
     password: Yup.string()
   });
 
-  const { email, password, profile, name, queueIds = [], whatsappId, startWork, endWork } = userData;
+  const { email, password, profile, name, queueIds = [], whatsappId, greetingMessage, transferMessage } = userData;
 
   try {
     await schema.validate({ email, password, profile, name });
@@ -66,8 +67,8 @@ const UpdateUserService = async ({
     profile,
     name,
     whatsappId: whatsappId || null,
-    startWork,
-    endWork
+    greetingMessage,
+    transferMessage
 
   });
 
@@ -83,6 +84,8 @@ const UpdateUserService = async ({
     email: user.email,
     profile: user.profile,
     companyId: user.companyId,
+    greetingMessage,
+    transferMessage,
     company,
     queues: user.queues
   };

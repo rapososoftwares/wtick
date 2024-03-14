@@ -237,20 +237,12 @@ const Users = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-            <TableCell align="center">
-                {i18n.t("users.table.name")}
-              </TableCell>
+              <TableCell align="center">{i18n.t("users.table.name")}</TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.email")}
               </TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.profile")}
-              </TableCell>
-              <TableCell align="center">
-                {i18n.t("users.table.startWork")}
-              </TableCell>
-              <TableCell align="center">
-                {i18n.t("users.table.endWork")}
               </TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.actions")}
@@ -264,8 +256,6 @@ const Users = () => {
                   <TableCell align="center">{user.name}</TableCell>
                   <TableCell align="center">{user.email}</TableCell>
                   <TableCell align="center">{user.profile}</TableCell>
-                  <TableCell align="center">{user.startWork}</TableCell>
-                  <TableCell align="center">{user.endWork}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
@@ -286,7 +276,7 @@ const Users = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {loading && <TableRowSkeleton columns={6} />}
+              {loading && <TableRowSkeleton columns={4} />}
             </>
           </TableBody>
         </Table>

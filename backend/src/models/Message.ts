@@ -38,7 +38,6 @@ class Message extends Model<Message> {
   @Column
   read: boolean;
 
-  @PrimaryKey
   @Default(false)
   @Column
   fromMe: boolean;
@@ -49,7 +48,7 @@ class Message extends Model<Message> {
   @Column(DataType.STRING)
   get mediaUrl(): string | null {
     if (this.getDataValue("mediaUrl")) {
-      return `${process.env.BACKEND_URL}/public/${this.getDataValue("mediaUrl")}`;
+      return `${process.env.BACKEND_URL}${process.env.PROXY_PORT ?`:${process.env.PROXY_PORT}`:""}/public/${this.getDataValue("mediaUrl")}`;
     }
     return null;
   }

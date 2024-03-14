@@ -12,8 +12,6 @@ interface QueueData {
   outOfHoursMessage?: string;
   schedules?: any[];
   orderQueue?: number;
-  integrationId?: number;
-  promptId?: number;
 }
 
 const CreateQueueService = async (queueData: QueueData): Promise<Queue> => {

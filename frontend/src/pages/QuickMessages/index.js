@@ -182,7 +182,7 @@ const Quickemessages = () => {
   const handleDeleteQuickemessage = async (quickemessageId) => {
     try {
       await api.delete(`/quick-messages/${quickemessageId}`);
-      toast.success(i18n.t("quickMessages.toasts.deleted"));
+      toast.success(i18n.t("quickemessages.toasts.deleted"));
     } catch (err) {
       toastError(err);
     }

@@ -28,10 +28,6 @@ interface TicketData {
   status: string;
   queueId: number;
   userId: number;
-  whatsappId: string;
-  useIntegration: boolean;
-  promptId: number;
-  integrationId: number;
 }
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
@@ -87,7 +83,7 @@ export const index = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const store = async (req: Request, res: Response): Promise<Response> => {
-  const { contactId, status, userId, queueId, whatsappId }: TicketData = req.body;
+  const { contactId, status, userId, queueId }: TicketData = req.body;
   const { companyId } = req.user;
 
   const ticket = await CreateTicketService({
@@ -95,8 +91,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     status,
     userId,
     companyId,
-    queueId,
-    whatsappId
+    queueId
   });
 
   const io = getIO();
@@ -187,13 +182,13 @@ export const update = async (
   const ticketData: TicketData = req.body;
   const { companyId } = req.user;
 
-  const response = await UpdateTicketService({
+  const { ticket } = await UpdateTicketService({
     ticketData,
     ticketId,
     companyId
   });
 
-  const { ticket } = response || {}; // FIX LUCAS_SAUD: Ensure 'ticket' is defined
+
   return res.status(200).json(ticket);
 };
 

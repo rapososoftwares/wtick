@@ -54,23 +54,13 @@ const usePlans = () => {
         return data;
     }
 
-    const getPlanCompany = async (params, id) => {
-        const { data } = await api.request({
-            url: `/companies/listPlan/${id}`,
-            method: 'GET',
-            params
-        });
-        return data;
-    }
-
     return {
         getPlanList,
         list,
         save,
         update,
         finder,
-        remove,
-        getPlanCompany
+        remove
     }
 }
 

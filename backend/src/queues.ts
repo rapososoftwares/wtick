@@ -27,10 +27,6 @@ import ShowFileService from "./services/FileServices/ShowService";
 import FilesOptions from './models/FilesOptions';
 import { addSeconds, differenceInSeconds } from "date-fns";
 import formatBody from "./helpers/Mustache";
-import { ClosedAllOpenTickets } from "./services/WbotServices/wbotClosedTickets";
-import FindOrCreateTicketService from "./services/TicketServices/FindOrCreateTicketService";
-import UpdateTicketService from "./services/TicketServices/UpdateTicketService";
-import { verifyMessage } from "./services/WbotServices/wbotMessageListener";
 
 
 const nodemailer = require('nodemailer');
@@ -201,25 +197,6 @@ async function handleVerifyQueue(job) {
   }
 };
 
-async function handleCloseTicketsAutomatic() {
-  const job = new CronJob('*/1 * * * *', async () => {
-    const companies = await Company.findAll();
-    companies.map(async c => {
-
-      try {
-        const companyId = c.id;
-        await ClosedAllOpenTickets(companyId);
-      } catch (e: any) {
-        Sentry.captureException(e);
-        logger.error("ClosedAllOpenTickets -> Verify: error", e.message);
-        throw e;
-      }
-
-    });
-  });
-  job.start()
-}
-
 async function handleVerifySchedules(job) {
   try {
     const { count, rows: schedules } = await Schedule.findAndCountAll({
@@ -267,46 +244,18 @@ async function handleSendScheduledMessage(job) {
   }
 
   try {
-    let whatsapp
-
-    if (!isNil(schedule.whatsappId)) {
-      whatsapp = await Whatsapp.findByPk(schedule.whatsappId);
-    }
-
-    if (!whatsapp)
-      whatsapp = await GetDefaultWhatsApp(schedule.companyId);
-
-    let ticket = null
-
-    if (schedule.openTicket === "enabled") {
-      ticket = await FindOrCreateTicketService(schedule.contact, whatsapp.id, 0, schedule.companyId, null);
-    }
+    const whatsapp = await GetDefaultWhatsApp(schedule.companyId);
 
     let filePath = null;
     if (schedule.mediaPath) {
       filePath = path.resolve("public", schedule.mediaPath);
-    }
-    const sentMessage = await SendMessage(whatsapp, {
+    } 
+
+    await SendMessage(whatsapp, {
       number: schedule.contact.number,
-      body: `\u200e ${formatBody(schedule.body, schedule.contact)}`,
+      body: formatBody(schedule.body, schedule.contact),
       mediaPath: filePath
     });
-
-    if (schedule.openTicket === "enabled") {
-      await verifyMessage(sentMessage, ticket, ticket.concat);
-    }
-    
-    if (ticket) {
-      await UpdateTicketService({
-        ticketData: {
-          status: schedule.statusTicket,
-          userId: schedule.ticketUserId || null,
-          queueId: schedule.queueId || null
-        },
-        ticketId: ticket.id,
-        companyId: ticket.companyId
-      })
-    }
 
     await scheduleRecord?.update({
       sentAt: moment().format("YYYY-MM-DD HH:mm"),
@@ -336,10 +285,7 @@ async function handleVerifyCampaigns(job) {
     where "scheduledAt" between now() and now() + '1 hour'::interval and status = 'PROGRAMADA'`,
       { type: QueryTypes.SELECT }
     );
-
-  if (campaigns.length > 0)
-    logger.info(`Campanhas encontradas: ${campaigns.length}`);
-  
+  logger.info(`Campanhas encontradas: ${campaigns.length}`);
   for (let campaign of campaigns) {
     try {
       const now = moment();
@@ -896,7 +842,6 @@ async function handleInvoiceCreate() {
   job.start()
 }
 
-handleCloseTicketsAutomatic()
 
 handleInvoiceCreate()
 
@@ -927,7 +872,7 @@ export async function startQueueProcess() {
     "Verify",
     {},
     {
-      repeat: { cron: "*/5 * * * * *", key: "verify" },
+      repeat: { cron: "*/5 * * * * *", key: "verify"  },
       removeOnComplete: true
     }
   );

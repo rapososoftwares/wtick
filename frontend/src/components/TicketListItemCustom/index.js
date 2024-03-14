@@ -36,8 +36,6 @@ import DoneIcon from '@material-ui/icons/Done';
 import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
 import contrastColor from "../../helpers/contrastColor";
 import ContactTag from "../ContactTag";
-import { MoreVert, Replay } from "@material-ui/icons";
-import ReplayIcon from '@material-ui/icons/Replay';
 
 const useStyles = makeStyles((theme) => ({
   ticket: {
@@ -72,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
     marginRight: 8,
     marginLeft: "auto",
-    top: "15px",
+    top: "10px",
     left: "20px",
     borderRadius: 0,
   },
@@ -138,6 +136,12 @@ const useStyles = makeStyles((theme) => ({
   },
 
 
+  acceptButton: {
+    position: "absolute",
+    left: "50%",
+  },
+
+
   ticketQueueColor: {
     flex: "none",
     width: "8px",
@@ -153,8 +157,8 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryContentSecond: {
     display: 'flex',
-   // marginTop: -10,
-   // marginLeft: "-10px",
+    // marginTop: 5,
+    //marginLeft: "5px",
     alignItems: "flex-start",
     flexWrap: "wrap",
     flexDirection: "row",
@@ -179,8 +183,8 @@ const useStyles = makeStyles((theme) => ({
 
   }
 }));
-  {/* INSERIDO O dentro do const handleChangeTab*/}
-  const TicketListItemCustom = ({handleChangeTab, ticket }) => {
+  {/*PLW DESIGN INSERIDO O dentro do const handleChangeTab*/}
+  const TicketListItemCustom = ({ ticket }) => {
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -251,40 +255,50 @@ const useStyles = makeStyles((theme) => ({
     if (isMounted.current) {
       setLoading(false);
     }
-    history.push(`/tickets/`);
-  };
-
-   const handleAcepptTicket = async () => {
-    setLoading(true);
-    try {
-      await api.put(`/tickets/${ticket.id}`, {
-        status: "open",
-        userId: user?.id,
-      });
-
-      let settingIndex;
-
-      try {
-        const { data } = await api.get("/settings/");
-        settingIndex = data.filter((s) => s.key === "sendGreetingAccepted");
-      } catch (err) {
-        toastError(err);
-      }
-
-      if (settingIndex[0].value === "enabled" && !ticket.isGroup) {
-        handleSendMessage(ticket.id);
-      }
-    } catch (err) {
-      setLoading(false);
-      toastError(err);
-    }
-
-    setLoading(false);
     history.push(`/tickets/${ticket.uuid}`);
   };
-	
+
+    const handleAcepptTicket = async (id) => {
+        setLoading(true);
+        try {
+            await api.put(`/tickets/${id}`, {
+                status: "open",
+                userId: user?.id,
+            });
+            
+            let settingIndex;
+
+            try {
+                const { data } = await api.get("/settings/");
+                
+                settingIndex = data.filter((s) => s.key === "sendGreetingAccepted");
+                
+            } catch (err) {
+                toastError(err);
+                   
+            }
+            
+            if (settingIndex[0].value === "enabled" && !ticket.isGroup) {
+                handleSendMessage(ticket.id);
+                
+            }
+
+        } catch (err) {
+            setLoading(false);
+            
+            toastError(err);
+        }
+        if (isMounted.current) {
+            setLoading(false);
+        }
+
+        // handleChangeTab(null, "tickets");
+        // handleChangeTab(null, "open");
+        history.push(`/tickets/${ticket.uuid}`);
+    };
 	    const handleSendMessage = async (id) => {
-        const msg = `{{ms}} *{{name}}*, meu nome é *${user?.name}* e agora vou prosseguir com seu atendimento!`;
+        
+        const msg = user.greetingMessage ? user.greetingMessage : `{{ms}} *{{name}}*, meu nome é *${user?.name}* e agora vou prosseguir com seu atendimento!`;
         const message = {
             read: 1,
             fromMe: true,
@@ -295,6 +309,7 @@ const useStyles = makeStyles((theme) => ({
             await api.post(`/messages/${id}`, message);
         } catch (err) {
             toastError(err);
+            
         }
     };
 	{/*CÓDIGO NOVO SAUDAÇÃO*/}
@@ -304,29 +319,11 @@ const useStyles = makeStyles((theme) => ({
     const { id, uuid } = ticket;
     setCurrentTicket({ id, uuid, code });
   };
-  
-  const handleUpdateTicketStatus = async (e, status, userId) => {
-		setLoading(true);
-		try {
-			await api.put(`/tickets/${ticket.id}`, {
-				status: status,
-				userId: userId || null,
-			});
 
-			setLoading(false);
-			if (status === "open") {
-				history.push(`/tickets/${ticket.id}`);
-			} else {
-				history.push("/tickets");
-			}
-		} catch (err) {
-			setLoading(false);
-			toastError(err);
-		}
-	};
 
   const renderTicketInfo = () => {
-     if (ticketUser && ticket.status !== "pending") {
+    if (ticketUser) {
+
       return (
         <>
           {ticket.chatbot && (
@@ -382,22 +379,22 @@ const useStyles = makeStyles((theme) => ({
           {ticket.status !== "pending" ?
             <Avatar
               style={{
-                marginTop: "-5px",
+                marginTop: "-20px",
                 marginLeft: "-3px",
                 width: "55px",
                 height: "55px",
-                borderRadius: "100%",
+                borderRadius: "10%",
               }}
               src={ticket?.contact?.profilePicUrl}
             />
             :
             <Avatar
               style={{
-                marginTop: "-5px",
+                marginTop: "-30px",
                 marginLeft: "0px",
                 width: "50px",
                 height: "50px",
-                borderRadius: "100%",
+                borderRadius: "10%",
               }}
               src={ticket?.contact?.profilePicUrl}
             />
@@ -407,14 +404,14 @@ const useStyles = makeStyles((theme) => ({
           disableTypography
 
           primary={
-           <span className={classes.contactNameWrapper}>
+            <span className={classes.contactNameWrapper}>
               <Typography
                 noWrap
                 component="span"
                 variant="body2"
                 color="textPrimary"
               >
-                {ticket.contact?.name}
+                {ticket.contact.name}
                 {profile === "admin" && (
                   <Tooltip title="Espiar Conversa">
                     <VisibilityIcon
@@ -438,22 +435,14 @@ const useStyles = makeStyles((theme) => ({
           }
           secondary={
             <span className={classes.contactNameWrapper}>
-                <Typography
+
+              <Typography
                 className={classes.contactLastMessage}
                 noWrap
                 component="span"
                 variant="body2"
                 color="textSecondary"
-              > {ticket.lastMessage.includes('data:image/png;base64') ? <MarkdownWrapper> Localização</MarkdownWrapper> : (  <div>
-                  {ticket.lastMessage.length > 30 ? (
-                   <>
-                    {ticket.lastMessage.slice(0, 30)}...
-                 </>
-                  ) : (
-                  ticket.lastMessage
-                  )}
-                 </div>
-                  )}
+              > {ticket.lastMessage.includes('data:image/png;base64') ? <MarkdownWrapper> Localização</MarkdownWrapper> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
                 <span className={classes.secondaryContentSecond} >
                   {ticket?.whatsapp?.name ? <Badge className={classes.connectionTag}>{ticket?.whatsapp?.name?.toUpperCase()}</Badge> : <br></br>}
                   {ticketUser ? <Badge style={{ backgroundColor: "#000000" }} className={classes.connectionTag}>{ticketUser}</Badge> : <br></br>}
@@ -505,71 +494,48 @@ const useStyles = makeStyles((theme) => ({
         </ListItemSecondaryAction>
         <span className={classes.secondaryContentSecond} >
           {ticket.status === "pending" && (
-          <Tooltip title="Aceitar Conversa">
-              <DoneIcon
-                onClick={() => handleAcepptTicket(ticket.id)}
-                fontSize="small"
-                style={{
-                  color: green[700],
-                  color: '#fff',
-                  backgroundColor: green[700],
-                  cursor: "pointer",
-                  borderRadius: 50,
-                  right: 15,
-                  top: 32,
-                  position: 'absolute',
-                }}
-              />
-            </Tooltip>
+            <ButtonWithSpinner
+              //color="primary"
+              style={{ backgroundColor: 'green', color: 'white', padding: '0px', bottom: '17px', borderRadius: '0px', left: '8px', fontSize: '0.6rem', marginBottom: '5px' }}
+              variant="contained"
+              className={classes.acceptButton}
+              size="small"
+              loading={loading}
+			  //PLW DESIGN INSERIDO O handleChangeTab
+              onClick={e => handleAcepptTicket(ticket.id)}
+            >
+              {i18n.t("ticketsList.buttons.accept")}
+            </ButtonWithSpinner>
+
           )}
           {(ticket.status !== "closed") && (
-              <Tooltip title="Resolver">
-              <ClearOutlinedIcon
-                onClick={() => handleCloseTicket(ticket.id)}
-                fontSize="small"
-                style={{
-                  color: '#fff',
-                  backgroundColor: red[700],
-                  cursor: "pointer",
-                  marginRight: 5,
-                  right: 38,
-                  top: 32,
-                  borderRadius: 50,
-                  position: 'absolute',
-                }}
-              />
-            </Tooltip>
-            
+            <ButtonWithSpinner
+              //color="primary"
+              style={{ backgroundColor: 'red', color: 'white', padding: '0px', bottom: '0px', borderRadius: '0px', left: '8px', fontSize: '0.6rem' }}
+              variant="contained"
+              className={classes.acceptButton}
+              size="small"
+              loading={loading}
+              onClick={e => handleCloseTicket(ticket.id)}
+            >
+              {i18n.t("ticketsList.buttons.closed")}
+            </ButtonWithSpinner>
+
           )}
-          	{ticket.status === "open" && (
-				<Tooltip title="Retornar para fila">
-					<ReplayIcon
-						loading={loading}
-						fontSize="small"
-						onClick={e => handleUpdateTicketStatus(e, "pending", null)}
-				     	style={{
-				     	color: '#fff',
-				     	backgroundColor: grey[700],
-                        cursor: "pointer",
-                        right: 15,
-                        top: 32,
-                        borderRadius: 50,
-                        position: 'absolute',
-                      }}
-                    />
-                  </Tooltip>
-               )}
-               
-          		{ticket.status === "closed" && (
-				<ButtonWithSpinner
-					loading={loading}
-					//startIcon={<Replay />}
-					size="small"
-					onClick={e => handleReopenTicket(ticket.id)}
-				>
-					{i18n.t("messagesList.header.buttons.reopen")}
-				</ButtonWithSpinner>
-			)}			
+          {(ticket.status === "closed") && (
+            <ButtonWithSpinner
+              //color="primary"
+              style={{ backgroundColor: 'red', color: 'white', padding: '0px', bottom: '0px', borderRadius: '0px', left: '8px', fontSize: '0.6rem' }}
+              variant="contained"
+              className={classes.acceptButton}
+              size="small"
+              loading={loading}
+              onClick={e => handleReopenTicket(ticket.id)}
+            >
+              {i18n.t("ticketsList.buttons.reopen")}
+            </ButtonWithSpinner>
+
+          )}
         </span>
       </ListItem>
 

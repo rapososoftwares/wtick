@@ -253,7 +253,7 @@ export default function Options(props) {
       value,
     });
     toast.success("Operação atualizada com sucesso.");
-    setCheckMsgIsGroupType(false);
+    setCheckMsgIsGroup(false);
     /*     if (typeof scheduleTypeChanged === "function") {
           scheduleTypeChanged(value);
         } */
@@ -388,8 +388,7 @@ export default function Options(props) {
               }}
             >
               <MenuItem value={"disabled"}>Desabilitado</MenuItem>
-              <MenuItem value={"queue"}>Fila</MenuItem>
-              <MenuItem value={"company"}>Empresa</MenuItem>
+              <MenuItem value={"queue"}>Gerenciamento Por Fila</MenuItem>
             </Select>
             <FormHelperText>
               {loadingScheduleType && "Atualizando..."}

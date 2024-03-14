@@ -23,7 +23,6 @@ import Whatsapp from "./Whatsapp";
 import WhatsappQueue from "./WhatsappQueue";
 import QueueOption from "./QueueOption";
 import Prompt from "./Prompt";
-import QueueIntegrations from "./QueueIntegrations";
 
 @Table
 class Queue extends Model<Queue> {
@@ -84,26 +83,12 @@ class Queue extends Model<Queue> {
   @Column
   orderQueue: number;
 
-
-  @ForeignKey(() => QueueIntegrations)
-  @Column
-  integrationId: number;
-
-  @BelongsTo(() => QueueIntegrations)
-  queueIntegrations: QueueIntegrations;
-
-  @ForeignKey(() => Prompt)
-  @Column
-  promptId: number;
-
-  @BelongsTo(() => Prompt)
-  prompt: Prompt;
-
-  @Column
-  mediaPath: string;
-
-  @Column
-  mediaName: string;
+  @HasMany(() => Prompt, {
+    onUpdate: "SET NULL",
+    onDelete: "SET NULL",
+    hooks: true
+  })
+  prompt: Prompt[];
 }
 
 export default Queue;

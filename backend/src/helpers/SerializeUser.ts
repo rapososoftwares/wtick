@@ -8,12 +8,12 @@ interface SerializedUser {
   name: string;
   email: string;
   profile: string;
+  greetingMessage: string;
+  transferMessage: string;
   companyId: number;
   company: Company | null;
   super: boolean;
   queues: Queue[];
-  startWork: string;
-  endWork: string;
 }
 
 export const SerializeUser = async (user: User): Promise<SerializedUser> => {
@@ -22,11 +22,11 @@ export const SerializeUser = async (user: User): Promise<SerializedUser> => {
     name: user.name,
     email: user.email,
     profile: user.profile,
+    greetingMessage: user.greetingMessage,
+    transferMessage: user.transferMessage,
     companyId: user.companyId,
     company: user.company,
     super: user.super,
-    queues: user.queues,
-    startWork: user.startWork,
-    endWork: user.endWork
+    queues: user.queues
   };
 };

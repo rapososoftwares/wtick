@@ -308,11 +308,9 @@ const TicketsList = ({
             </div>
           ) : (
             <>
-            {ticketsList
-             .filter(ticket => ticket.isGroup.toString() === "false")
-             .map(ticket => (
-              <TicketListItem ticket={ticket} key={ticket.id} />
-            ))}
+              {ticketsList.map((ticket) => (
+                <TicketListItem ticket={ticket} key={ticket.id} />
+              ))}
             </>
           )}
           {loading && <TicketsListSkeleton />}

@@ -4,12 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Paper from "@material-ui/core/Paper";
 
-import TicketListItem from "../TicketListItem";
+import TicketListItem from "../TicketListItemCustom";
 import TicketsListSkeleton from "../TicketsListSkeleton";
 
 import useTickets from "../../hooks/useTickets";
 import { i18n } from "../../translate/i18n";
-import { ListSubheader } from "@material-ui/core";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { socketConnection } from "../../services/socket";
 
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
   ticketsList: {
     flex: 1,
+    maxHeight: "100%",
     overflowY: "scroll",
     ...theme.scrollbarStyles,
     borderTop: "2px solid rgba(0, 0, 0, 0.12)",
@@ -88,7 +88,7 @@ const reducer = (state, action) => {
       }
     });
 
-    return [...newTickets];
+    return [...state];
   }
 
   if (action.type === "RESET_UNREAD") {
@@ -153,39 +153,50 @@ const reducer = (state, action) => {
   }
 };
 
-const TicketsList = ({
-  status,
-  searchParam,
-  tags,
-  showAll,
-  selectedQueueIds,
-}) => {
+const TicketsListCustom = (props) => {
+  const {
+    status,
+    searchParam,
+    tags,
+    users,
+    showAll,
+    selectedQueueIds,
+    updateCount,
+    style,
+  } = props;
   const classes = useStyles();
   const [pageNumber, setPageNumber] = useState(1);
   const [ticketsList, dispatch] = useReducer(reducer, []);
   const { user } = useContext(AuthContext);
+  const { profile, queues } = user;
 
   useEffect(() => {
     dispatch({ type: "RESET" });
     setPageNumber(1);
-  }, [status, searchParam, dispatch, showAll, selectedQueueIds]);
+  }, [status, searchParam, dispatch, showAll, tags, users, selectedQueueIds]);
 
   const { tickets, hasMore, loading } = useTickets({
     pageNumber,
     searchParam,
-    tags: JSON.stringify(tags),
     status,
     showAll,
+    tags: JSON.stringify(tags),
+    users: JSON.stringify(users),
     queueIds: JSON.stringify(selectedQueueIds),
   });
 
   useEffect(() => {
-    if (!status && !searchParam) return;
-    dispatch({
-      type: "LOAD_TICKETS",
-      payload: tickets,
-    });
-  }, [tickets, status, searchParam]);
+    const queueIds = queues.map((q) => q.id);
+    const filteredTickets = tickets.filter(
+      (t) => queueIds.indexOf(t.queueId) > -1
+    );
+
+    if (profile === "user") {
+      dispatch({ type: "LOAD_TICKETS", payload: filteredTickets });
+    } else {
+      dispatch({ type: "LOAD_TICKETS", payload: tickets });
+    }
+  }, [tickets, status, searchParam, queues, profile]);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
@@ -207,6 +218,7 @@ const TicketsList = ({
     });
 
     socket.on(`company-${companyId}-ticket`, (data) => {
+      
       if (data.action === "updateUnread") {
         dispatch({
           type: "RESET_UNREAD",
@@ -231,6 +243,15 @@ const TicketsList = ({
     });
 
     socket.on(`company-${companyId}-appMessage`, (data) => {
+      const queueIds = queues.map((q) => q.id);
+      if (
+        profile === "user" &&
+        (queueIds.indexOf(data.ticket.queue?.id) === -1 ||
+          data.ticket.queue === null)
+      ) {
+        return;
+      }
+
       if (data.action === "create" && shouldUpdateTicket(data.ticket)) {
         dispatch({
           type: "UPDATE_TICKET_UNREAD_MESSAGES",
@@ -251,7 +272,14 @@ const TicketsList = ({
     return () => {
       socket.disconnect();
     };
-  }, [status, showAll, user, selectedQueueIds]);
+  }, [status, showAll, user, selectedQueueIds, tags, users, profile, queues]);
+
+  useEffect(() => {
+    if (typeof updateCount === "function") {
+      updateCount(ticketsList.length);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticketsList]);
 
   const loadMore = () => {
     setPageNumber((prevState) => prevState + 1);
@@ -268,7 +296,7 @@ const TicketsList = ({
   };
 
   return (
-    <div className={classes.ticketsListWrapper}>
+    <Paper className={classes.ticketsListWrapper} style={style}>
       <Paper
         square
         name="closed"
@@ -277,26 +305,6 @@ const TicketsList = ({
         onScroll={handleScroll}
       >
         <List style={{ paddingTop: 0 }}>
-          {status === "open" && (
-            <ListSubheader className={classes.ticketsListHeader}>
-              <div>
-                {i18n.t("ticketsList.assignedHeader")}
-                <span className={classes.ticketsCount}>
-                  {ticketsList.length}
-                </span>
-              </div>
-            </ListSubheader>
-          )}
-          {status === "pending" && (
-            <ListSubheader className={classes.ticketsListHeader}>
-              <div>
-                {i18n.t("ticketsList.pendingHeader")}
-                <span className={classes.ticketsCount}>
-                  {ticketsList.length}
-                </span>
-              </div>
-            </ListSubheader>
-          )}
           {ticketsList.length === 0 && !loading ? (
             <div className={classes.noTicketsDiv}>
               <span className={classes.noTicketsTitle}>
@@ -318,8 +326,8 @@ const TicketsList = ({
           {loading && <TicketsListSkeleton />}
         </List>
       </Paper>
-    </div>
+    </Paper>
   );
 };
 
-export default TicketsList;
+export default TicketsListCustom;

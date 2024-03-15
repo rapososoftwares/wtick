@@ -8,7 +8,6 @@ export type MessageData = {
   number: number | string;
   body: string;
   mediaPath?: string;
-  fileName?: string;
 };
 
 export const SendMessage = async (
@@ -23,9 +22,8 @@ export const SendMessage = async (
 
     if (messageData.mediaPath) {
       const options = await getMessageOptions(
-        messageData.fileName,
-        messageData.mediaPath,
-        messageData.body
+        messageData.body,
+        messageData.mediaPath
       );
       if (options) {
         const body = fs.readFileSync(messageData.mediaPath);
@@ -34,7 +32,7 @@ export const SendMessage = async (
         });
       }
     } else {
-      const body = `\u200e ${messageData.body}`;
+      const body = `\u200e${messageData.body}`;
       message = await wbot.sendMessage(chatId, { text: body });
     }
 

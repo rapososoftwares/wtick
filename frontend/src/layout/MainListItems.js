@@ -280,11 +280,6 @@ const MainListItems = (props) => {
         icon={<BorderColorIcon />}
             />
             <ListItemLink
-              to="/contacts"
-              primary={i18n.t("mainDrawer.listItems.contacts")}
-              icon={<ContactPhoneOutlinedIcon />}
-            />
-            <ListItemLink
               to="/schedules"
               primary={i18n.t("mainDrawer.listItems.schedules")}
               icon={<EventIcon />}
@@ -432,6 +427,12 @@ const MainListItems = (props) => {
                   <SyncAltIcon />
                 </Badge>
               }
+            />
+
+            <ListItemLink
+              to="/contacts"
+              primary={i18n.t("mainDrawer.listItems.contacts")}
+              icon={<ContactPhoneOutlinedIcon />}
             />
              <ListItemLink
               to="/files"
